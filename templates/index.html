@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+    <title>plagiarism.io</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">plagiarism<span style="color: green;">.io</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" style="color: green;">Detection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">API Docs</a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-outline-success me-2" type="button">Login</button>
+    </div>
+</nav>
+<div class="container">
+    <h1>Plagiarism detection</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis, orci id tristique efficitur, eros risus semper sapien, quis semper erat nunc tincidunt justo. Nunc sit amet neque quis urna dignissim accumsan. Phasellus ut laoreet ipsum. Nulla suscipit ante ut rutrum fermentum. Pellentesque sed blandit risus. Quisque in tempor tellus. Curabitur feugiat pretium est non feugiat. Duis sit amet sagittis nunc. Nullam in quam eu neque accumsan sodales. In interdum lorem id risus eleifend vulputate. Maecenas ullamcorper congue porta. Mauris enim mi, vehicula ac nulla sit amet, commodo rhoncus orci. Curabitur tortor nunc, bibendum at rutrum at, ornare sed ligula. Donec porta ipsum massa, ac ultricies dolor venenatis at. Praesent at libero velit.</p>
+    <div class="row align-items-start">
+        <div class="col-sm">
+            <div class="form-floating">
+                <textarea name="textA" class="textarea form-control" placeholder="Ender first text here" id="floatingTextarea1"></textarea>
+                <label for="floatingTextarea1">First text</label>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="form-floating">
+                <textarea name="textB" class="textarea form-control" placeholder="Enter second text here" id="floatingTextarea2"></textarea>
+                <label for="floatingTextarea2">Second text</label>
+            </div>
+        </div>
+    </div>
+    <div class="detect-btn d-grid gap-2" id="generate-button-div">
+        <button class="btn btn-success" type="button" id="generate-button">Generate report</button>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center" id="loading" style="display: none!important;">
+        <div class="spinner-grow text-success" role="status" style="margin: 0 10px 0 10px;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-success" role="status" style="margin: 0 10px 0 10px;">
+            <span class="visually-hidden">Loading...</span>
+        </div><div class="spinner-grow text-success" role="status" style="margin: 0 10px 0 10px;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+        <div class="spinner-grow text-success" role="status" style="margin: 0 10px 0 10px;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-success" role="status" style="margin: 0 10px 0 10px;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div id="report"></div>
+    <br><br><br>
+</div>
+<footer class="footer mt-auto py-3 bg-light fixed-bottom">
+    <div class="container">
+        <span class="text-muted">Developed by professionals <a href="https://github.com/UndeadBigUnicorn">@UndeadBigUnicorn</a>, <a href="https://github.com/illyamaltsev">@imaltsev</a></span>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="/static/app.js"></script>
+</body>
+
+</html>
