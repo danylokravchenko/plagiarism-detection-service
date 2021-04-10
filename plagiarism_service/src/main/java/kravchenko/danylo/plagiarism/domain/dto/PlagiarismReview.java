@@ -1,4 +1,4 @@
-package kravchenko.danylo.plagiarism.dto;
+package kravchenko.danylo.plagiarism.domain.dto;
 
 import lombok.*;
 

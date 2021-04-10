@@ -2,9 +2,9 @@ package kravchenko.danylo.plagiarism.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kravchenko.danylo.plagiarism.dto.PlagiarismRequestItem;
-import kravchenko.danylo.plagiarism.dto.PlagiarismResponseItem;
-import kravchenko.danylo.plagiarism.dto.PlagiarismReview;
+import kravchenko.danylo.plagiarism.domain.dto.PlagiarismRequestItem;
+import kravchenko.danylo.plagiarism.domain.dto.PlagiarismResponseItem;
+import kravchenko.danylo.plagiarism.domain.dto.PlagiarismReview;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.corn.httpclient.HttpClient;
@@ -23,6 +23,8 @@ public class PlagiarismService {
 
     @Value("${remoteUrl}")
     private String remoteUrl;
+    @Value("${symbolBatch}")
+    private Integer symbolBatch;
 
     /*
      * make a remote request to plagiarism server
@@ -51,14 +53,20 @@ public class PlagiarismService {
      * Split text into chunks
      */
     private List<String> splitText(final String text) {
-        if (text.length() <= 550) {
+        if (text.length() <= symbolBatch+50) {
             return new ArrayList<>(){{add(text);}};
         }
         List<String> result = new ArrayList<>();
         int startIndex = 0;
-        int endIndex = 551;
-        while(endIndex <= text.length()) {
+        int endIndex = symbolBatch+50+1;
+        while(startIndex < text.length()) {
+            // end of the batch will be the end of the original text
+            if (endIndex >= text.length()) {
+                result.add(text.substring(startIndex));
+                break;
+            }
             int searchStartIndex = endIndex-80;
+
             // substring where to search for the end of the input sentence
             String dotToFind = text.substring(searchStartIndex, endIndex);
             // index of the dot
@@ -75,7 +83,10 @@ public class PlagiarismService {
             result.add(text.substring(startIndex, searchStartIndex + sentenceEnd));
 
             startIndex = searchStartIndex + sentenceEnd + 1;
-            endIndex = startIndex+500;
+            endIndex = startIndex+symbolBatch;
+            if (endIndex >= text.length()) {
+                endIndex = text.length();
+            }
         }
 
         return result;
@@ -104,7 +115,7 @@ public class PlagiarismService {
     private PlagiarismReview highlightPlagiarism(final List<PlagiarismResponseItem> items, final String textA, final String textB) {
         PlagiarismReview result = new PlagiarismReview();
 
-        double plagiarismLevel = items.stream()
+        int plagiarismLength = items.stream()
                 .filter(PlagiarismResponseItem::isPlagiarism)
                 .map(item -> {
                     int startIndexTextA = textA.indexOf(item.getTextA());
@@ -114,9 +125,10 @@ public class PlagiarismService {
 
                     result.addHighlight(startIndexTextA, endIndexTextA, startIndexTextB, endIndexTextB, item.getAccuracy());
 
-                    return item.getAccuracy();
-                }).mapToDouble(i -> i).average()
-                .orElse(0);
+                    return item.getTextA().length();
+                }).mapToInt(i -> i).sum();
+
+        double plagiarismLevel = (plagiarismLength / (double)(textA.length()));
 
         result.setPlagiarismLevel(plagiarismLevel);
         return result;
@@ -127,7 +139,7 @@ public class PlagiarismService {
      */
     public PlagiarismReview analyzePlagiarism(final PlagiarismRequestItem item) {
         // split big texts to small ones and pass them to plagiarism server
-        if (item.getTextA().length() > 500 || item.getTextB().length() > 500) {
+        if (item.getTextA().length() > symbolBatch || item.getTextB().length() > symbolBatch) {
             List<String> textA = splitText(item.getTextA());
             List<String> textB = splitText(item.getTextB());
             List<PlagiarismRequestItem> items = createTextPairs(textA, textB);

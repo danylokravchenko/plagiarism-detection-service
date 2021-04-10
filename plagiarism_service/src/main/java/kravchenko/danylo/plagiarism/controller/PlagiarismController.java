@@ -1,7 +1,7 @@
 package kravchenko.danylo.plagiarism.controller;
 
-import kravchenko.danylo.plagiarism.dto.PlagiarismRequestItem;
-import kravchenko.danylo.plagiarism.dto.PlagiarismReview;
+import kravchenko.danylo.plagiarism.domain.dto.PlagiarismRequestItem;
+import kravchenko.danylo.plagiarism.domain.dto.PlagiarismReview;
 import kravchenko.danylo.plagiarism.service.PlagiarismService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
