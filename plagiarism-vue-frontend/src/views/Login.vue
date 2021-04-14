@@ -5,6 +5,9 @@
                 <div class="card-body">
                     <h2 class="card-title">Log in</h2>
                     <p class="card-text">to collect detection statistic and have access to API</p>
+                    <div class="alert alert-danger" role="alert" v-if="error">
+                        {{error}}
+                    </div>
                     <form>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -17,7 +20,9 @@
                         </div>
                         <div class="row align-items-start">
                             <div class="col">
-                                <button type="button" class="btn btn-success full-width" v-on:click="submitLogIn()">Log in</button>
+                                <button type="button" class="btn btn-success full-width" v-on:click="submitLogIn()">Log
+                                    in
+                                </button>
                             </div>
                             <div class="col">
                                 <router-link type="submit" class="btn btn-outline-success full-width" to="/register">
@@ -43,11 +48,12 @@
         data() {
             return {
                 username: '',
-                password: ''
+                password: '',
+                error: ''
             }
         },
         methods: {
-            submitLogIn(){
+            submitLogIn() {
                 this.axios
                     .post('http://localhost:8080/auth/login', {
                         login: this.username,
@@ -63,6 +69,9 @@
                         authService.auth(user);
                         this.$bus.$emit('logged', 'User logged');
                         this.$router.push('/');
+                    })
+                    .catch(error => {
+                        this.error = error.response.data.message
                     })
             }
 
