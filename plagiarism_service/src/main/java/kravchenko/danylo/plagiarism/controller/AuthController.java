@@ -49,6 +49,7 @@ public class AuthController {
     @SneakyThrows
     @PostMapping("/login")
     public ResponseEntity<UserEntity> login(@Valid @RequestBody final UserDto userLoginData, HttpServletResponse response) {
+        log.info(userLoginData.getLogin(), userLoginData.getPassword());
 
         UserEntity user = userService.findByLogin(userLoginData.getLogin())
                 .orElseThrow(() -> new NotFoundException("No user with login: " + userLoginData.getLogin()));
@@ -76,6 +77,7 @@ public class AuthController {
     @SneakyThrows
     @PostMapping("/register")
     public ResponseEntity<UserEntity> register(@Valid @RequestBody final UserDto user) {
+        log.info(user.getLogin(), user.getPassword());
 
         if (userService.findByLogin(user.getLogin()).isPresent()) {
             throw new BadRequestException("User with this login already exists");
