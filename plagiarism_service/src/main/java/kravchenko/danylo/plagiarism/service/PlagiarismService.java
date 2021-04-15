@@ -6,13 +6,16 @@ import kravchenko.danylo.plagiarism.domain.dto.PlagiarismRequestItem;
 import kravchenko.danylo.plagiarism.domain.dto.PlagiarismResponseItem;
 import kravchenko.danylo.plagiarism.domain.dto.PlagiarismReview;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.corn.httpclient.HttpClient;
 import net.sf.corn.httpclient.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +32,7 @@ public class PlagiarismService {
     /*
      * make a remote request to plagiarism server
      */
-    private List<PlagiarismResponseItem> makeRequest(final List<PlagiarismRequestItem> items) {
+    private List<PlagiarismResponseItem> makeRequest(final List<PlagiarismRequestItem> items) throws IOException, URISyntaxException {
         try {
             HttpClient client = new HttpClient(new URI(remoteUrl));
             client.setContentType("application/json");
@@ -45,8 +48,8 @@ public class PlagiarismService {
             });
         } catch (Exception e) {
             log.error("Error while communicating with plagiarism server: " + e.toString());
+            throw e;
         }
-        return new ArrayList<>();
     }
 
     /*
@@ -137,6 +140,7 @@ public class PlagiarismService {
     /*
      * Analyze 2 texts on plagiarism
      */
+    @SneakyThrows
     public PlagiarismReview analyzePlagiarism(final PlagiarismRequestItem item) {
         // split big texts to small ones and pass them to plagiarism server
         if (item.getTextA().length() > symbolBatch || item.getTextB().length() > symbolBatch) {

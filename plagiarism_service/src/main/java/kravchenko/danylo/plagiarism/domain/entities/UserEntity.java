@@ -1,6 +1,7 @@
 package kravchenko.danylo.plagiarism.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kravchenko.danylo.plagiarism.domain.dto.UserDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,14 +9,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
 @Data
-@ToString(exclude = "password")
+@ToString(exclude = {"password", "history"})
+@EqualsAndHashCode(exclude = "history")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class UserEntity {
 
     @Id
@@ -42,5 +46,34 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private List<PermissionEntity> permissions;
+
+    @OneToMany(targetEntity = HistoryEntity.class, mappedBy="user", fetch = FetchType.LAZY)
+    private List<HistoryEntity> history;
+
+    /*
+     * Convert UserEntity to UserDto
+     */
+    public UserDto toDto() {
+        return UserDto.builder()
+                .id(getId())
+                .login(getLogin())
+                .permissions(getPermissions().stream().map(PermissionEntity::getPermission).collect(Collectors.toList()))
+                .build();
+    }
+
+    /*
+     * check whether the user has needed permission
+     */
+    public boolean hasPermission(final String permissionCode) {
+
+        for (PermissionEntity permissionEntity : getPermissions()) {
+            if (permissionEntity.getPermission().name().equals(permissionCode)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
 
 }

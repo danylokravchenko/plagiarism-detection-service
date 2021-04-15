@@ -2,10 +2,8 @@ package kravchenko.danylo.plagiarism.domain.dto;
 
 import kravchenko.danylo.plagiarism.domain.entities.PermissionEntity;
 import kravchenko.danylo.plagiarism.domain.entities.UserEntity;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import kravchenko.danylo.plagiarism.domain.type.Permission;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -15,8 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor(staticName = "of")
+@Builder
 public class UserDto {
+
+    private Integer id;
 
     @NotNull(message = "Login cannot be empty")
     @Size(min = 1, max = 20)
@@ -26,6 +26,8 @@ public class UserDto {
     @NotNull(message = "Password cannot be empty")
     @Size(min = 8, max = 40)
     private String password;
+
+    private List<Permission> permissions;
 
     /*
      * Convert UserDto instance to UserEntity object

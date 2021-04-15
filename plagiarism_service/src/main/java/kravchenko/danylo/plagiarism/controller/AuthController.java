@@ -48,7 +48,7 @@ public class AuthController {
 
     @SneakyThrows
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> login(@Valid @RequestBody final UserDto userLoginData, HttpServletResponse response) {
+    public ResponseEntity<UserDto> login(@Valid @RequestBody final UserDto userLoginData, HttpServletResponse response) {
 
         UserEntity user = userService.findByLogin(userLoginData.getLogin())
                 .orElseThrow(() -> new NotFoundException("No user with login: " + userLoginData.getLogin()));
@@ -66,7 +66,7 @@ public class AuthController {
             String jwt = tokenProvider.generateToken(authentication, false);
             response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
 
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(user.toDto());
 
         } else {
             throw new NotFoundException("Invalid credentials were provided");
