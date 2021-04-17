@@ -30,7 +30,7 @@ public class PlagiarismApplication {
 						CacheBuilder.newBuilder()
 								.expireAfterWrite(30, TimeUnit.SECONDS)
 								.build().asMap(),
-						false);
+						true);
 			}
 		};
 	}

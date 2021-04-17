@@ -37,6 +37,7 @@
 <script>
     import Loading from "../components/Loading";
     import Report from "../components/Report";
+    import {authService} from "../services/authService";
 
     export default {
         components: {Report, Loading},
@@ -63,42 +64,64 @@
                 return Math.round(prob * 100)
             },
 
+            handleResponse(response){
+                this.responseData = response.data
+                this.responseData.plagiarismPercent = this.probToPercent(this.responseData.plagiarismLevel)
+                this.responseData.plagiarismColor = this.percentToColor(this.responseData.plagiarismPercent)
+                this.responseData.markedA = this.textA
+                this.responseData.markedB = this.textB
+
+                this.responseData.highlights.forEach(elem => {
+                    elem.plagiarismPercent = this.probToPercent(elem.plagiarismLevel)
+                    elem.plagiarismColor = this.percentToColor(elem.plagiarismPercent)
+                    elem.textA.text = this.textA.slice(elem.textA.startIndex, elem.textA.endIndex)
+                    elem.textB.text = this.textB.slice(elem.textB.startIndex, elem.textB.endIndex)
+
+                    this.responseData.markedA = this.responseData.markedA.slice(0, elem.textA.startIndex)
+                        + '<mark>' + this.textA.slice(elem.textA.startIndex, elem.textA.endIndex)
+                        + '</mark>' + this.textA.slice(elem.textA.endIndex, this.textA.lenght)
+                    this.responseData.markedB = this.responseData.markedB.slice(0, elem.textB.startIndex)
+                        + '<mark>' + this.textB.slice(elem.textB.startIndex, elem.textB.endIndex)
+                        + '</mark>' + this.textB.slice(elem.textB.endIndex, this.textB.lenght)
+
+                });
+
+                this.reportData = this.responseData;
+                this.isLoading = false;
+
+                this.$refs.report.scrollTo();
+            },
+
             generateReport() {
                 this.isLoading = true;
 
-                this.axios
-                    .post('http://localhost:8080/plagiarism', {
-                        textA: this.textA,
-                        textB: this.textB
-                    })
-                    .then(response => {
-                        this.responseData = response.data
-                        this.responseData.plagiarismPercent = this.probToPercent(this.responseData.plagiarismLevel)
-                        this.responseData.plagiarismColor = this.percentToColor(this.responseData.plagiarismPercent)
-                        this.responseData.markedA = this.textA
-                        this.responseData.markedB = this.textB
+                let user = authService.getUser();
 
-                        this.responseData.highlights.forEach(elem => {
-                            elem.plagiarismPercent = this.probToPercent(elem.plagiarismLevel)
-                            elem.plagiarismColor = this.percentToColor(elem.plagiarismPercent)
-                            elem.textA.text = this.textA.slice(elem.textA.startIndex, elem.textA.endIndex)
-                            elem.textB.text = this.textB.slice(elem.textB.startIndex, elem.textB.endIndex)
+                if (user){
 
-                            this.responseData.markedA = this.responseData.markedA.slice(0, elem.textA.startIndex)
-                                + '<mark>' + this.textA.slice(elem.textA.startIndex, elem.textA.endIndex)
-                                + '</mark>' + this.textA.slice(elem.textA.endIndex, this.textA.lenght)
-                            this.responseData.markedB = this.responseData.markedB.slice(0, elem.textB.startIndex)
-                                + '<mark>' + this.textB.slice(elem.textB.startIndex, elem.textB.endIndex)
-                                + '</mark>' + this.textB.slice(elem.textB.endIndex, this.textB.lenght)
+                    this.axios
+                        .post('http://localhost:8080/plagiarism', {
+                            textA: this.textA,
+                            textB: this.textB
+                        }, {
+                            headers: {
+                                Authorization: 'Bearer ' + user.token
+                            }
+                        })
+                        .then(response => this.handleResponse(response))
+                        .catch(error => this.info=error);
+                }
+                else {
+                    this.axios
+                        .post('http://localhost:8080/plagiarism', {
+                            textA: this.textA,
+                            textB: this.textB
+                        })
+                        .then(response => this.handleResponse(response))
+                        .catch(error => this.info=error);
+                }
 
-                        });
 
-                        this.reportData = this.responseData;
-                        this.isLoading = false;
-
-                        this.$refs.report.scrollTo();
-                    })
-                    .catch(error => this.info=error);
             }
         }
     }

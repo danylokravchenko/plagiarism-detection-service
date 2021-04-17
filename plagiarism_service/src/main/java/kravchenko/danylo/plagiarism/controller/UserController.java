@@ -43,6 +43,7 @@ public class UserController {
             @RequestParam(name = "limit", defaultValue = "10") final Integer limit,
             final HttpServletRequest request
     ) {
+        log.info("AAAA");
         UserEntity user = checkAccess(id, "VIEW_USERS", request);
 
         return userService.getUserHistory(user.getId(), page, limit);

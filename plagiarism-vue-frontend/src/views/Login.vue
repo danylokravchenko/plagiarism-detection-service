@@ -60,6 +60,7 @@
                         password: this.password
                     })
                     .then(response => {
+                        console.log(response)
                         let user = {
                             id: response.data.id,
                             username: response.data.login,

@@ -19,12 +19,17 @@ public class CorsFilter extends org.springframework.web.filter.CorsFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        response.addHeader("Access-Control-Allow-Headers",
-                "Access-Control-Allow-Origin, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-        response.addHeader("Access-Control-Expose-Headers", "Authorization");
-        if (response.getHeader("Access-Control-Allow-Origin") == null)
-            response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers", "*");
+        response.addHeader("Access-Control-Expose-Headers", "*");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, OPTIONS");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Max-Age", "3600");
         filterChain.doFilter(request, response);
     }
 
 }
+
+//header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+//header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
