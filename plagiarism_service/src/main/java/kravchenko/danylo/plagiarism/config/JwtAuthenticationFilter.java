@@ -1,7 +1,6 @@
 package kravchenko.danylo.plagiarism.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.security.SecurityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,14 +21,12 @@ import java.io.IOException;
  */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private TokenProvider jwtTokenUtil;
-
     private static final String HEADER_STRING = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private TokenProvider jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {

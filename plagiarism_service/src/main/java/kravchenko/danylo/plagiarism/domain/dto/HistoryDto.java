@@ -5,8 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import kravchenko.danylo.plagiarism.domain.entities.PermissionEntity;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -42,7 +44,7 @@ class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
     public void serialize(LocalDateTime time,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         jsonGenerator.writeObject(time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 }
