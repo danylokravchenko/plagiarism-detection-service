@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,24 +17,24 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class PlagiarismApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PlagiarismApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PlagiarismApplication.class, args);
+    }
 
-	@Bean("cacheManager")
-	public CacheManager cacheManager() {
-		return new ConcurrentMapCacheManager() {
-			@Override
-			protected Cache createConcurrentMapCache(String name) {
-				return new ConcurrentMapCache(
-						name,
-						CacheBuilder.newBuilder()
-								.expireAfterWrite(30, TimeUnit.SECONDS)
-								.build().asMap(),
-						true);
-			}
-		};
-	}
+    @Bean("cacheManager")
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager() {
+            @Override
+            protected Cache createConcurrentMapCache(String name) {
+                return new ConcurrentMapCache(
+                        name,
+                        CacheBuilder.newBuilder()
+                                .expireAfterWrite(30, TimeUnit.SECONDS)
+                                .build().asMap(),
+                        true);
+            }
+        };
+    }
 
 
 }

@@ -50,6 +50,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@Valid @RequestBody final UserDto userLoginData, HttpServletResponse response) {
 
+        log.info(String.valueOf(userLoginData));
+
         UserEntity user = userService.findByLogin(userLoginData.getLogin())
                 .orElseThrow(() -> new NotFoundException("No user with login: " + userLoginData.getLogin()));
 
