@@ -1,14 +1,8 @@
 <template>
     <div class="container">
         <h1 style="margin-top: 20px;">Plagiarism detection</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis, orci id tristique efficitur, eros
-            risus semper sapien, quis semper erat nunc tincidunt justo. Nunc sit amet neque quis urna dignissim
-            accumsan. Phasellus ut laoreet ipsum. Nulla suscipit ante ut rutrum fermentum. Pellentesque sed blandit
-            risus. Quisque in tempor tellus. Curabitur feugiat pretium est non feugiat. Duis sit amet sagittis nunc.
-            Nullam in quam eu neque accumsan sodales. In interdum lorem id risus eleifend vulputate. Maecenas
-            ullamcorper congue porta. Mauris enim mi, vehicula ac nulla sit amet, commodo rhoncus orci. Curabitur tortor
-            nunc, bibendum at rutrum at, ornare sed ligula. Donec porta ipsum massa, ac ultricies dolor venenatis at.
-            Praesent at libero velit.</p>
+        <p>plagiarism<span style="color: green;">.io</span> can detect complex plagiarism in two texts.
+        Moreover, plagiarism<span style="color: green;">.io</span> detects the plagiarism in the meaning of the text, not the words used to express the idea.</p>
         <div class="row align-items-start">
             <div class="col-sm">
                 <div class="form-floating">
