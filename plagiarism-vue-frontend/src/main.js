@@ -11,6 +11,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueAxios from "vue-axios";
 import axios from "axios";
 
+import VueMeta from 'vue-meta';
+
+Vue.use(VueMeta);
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin

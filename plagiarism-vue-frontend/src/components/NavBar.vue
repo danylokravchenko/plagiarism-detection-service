@@ -16,7 +16,7 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/about">About</router-link>
+                        <a class="nav-link" href="https://github.com/UndeadBigUnicorn/plagiarism#the-project">About</a>
                     </li>
 <!--                    <li class="nav-item">-->
 <!--                        <router-link class="nav-link" to="/api/docs">API Docs</router-link>-->

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>Plagiarism detection</h1>
+        <h1 style="margin-top: 20px;">Plagiarism detection</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis, orci id tristique efficitur, eros
             risus semper sapien, quis semper erat nunc tincidunt justo. Nunc sit amet neque quis urna dignissim
             accumsan. Phasellus ut laoreet ipsum. Nulla suscipit ante ut rutrum fermentum. Pellentesque sed blandit

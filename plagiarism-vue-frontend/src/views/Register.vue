@@ -57,10 +57,7 @@
                             login: this.username,
                             password: this.password1
                         })
-                        .then(response => {
-                            this.$router.push('/login');
-
-                        })
+                        .then(response => this.$router.push('/login'))
                         .catch(error=>{
                             this.error = error.response.data.message
                         })
