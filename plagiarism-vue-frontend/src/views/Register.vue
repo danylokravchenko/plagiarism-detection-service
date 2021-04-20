@@ -6,17 +6,23 @@
                     <h2 class="card-title">Register</h2>
                     <p class="card-text">to collect detection statistic and have access to API</p>
                     <div class="alert alert-danger" role="alert" v-if="error">
-                        {{error}}
+                        <p>{{error.message}}</p>
                     </div>
                     <form>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Username</label>
                             <input type="text" class="form-control" id="exampleInputEmail1"
                                    aria-describedby="emailHelp" v-model="username">
+                            <div v-if="error && error.details && error.details.login" style="margin-top: 5px;color:red;">
+                                <p>{{error.details.login}}</p>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password</label>
                             <input type="password" class="form-control" id="exampleInputPassword1" v-model="password1">
+                            <div v-if="error && error.details && error.details.password" style="margin-top: 5px;color:red;">
+                                <p>{{error.details.password}}</p>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword2" class="form-label">Password again</label>
@@ -46,7 +52,7 @@
                 username: '',
                 password1: '',
                 password2: '',
-                error: null
+                error: null,
             }
         },
         methods: {
@@ -59,11 +65,20 @@
                         })
                         .then(response => this.$router.push('/login'))
                         .catch(error=>{
-                            this.error = error.response.data.message
+                            try {
+                                this.error = {
+                                    message: error.response.data.message,
+                                    details: JSON.parse(error.response.data.details)
+                                }
+                            } catch (e) {
+                                this.error = {
+                                    message: error.response.data.message
+                                }
+                            }
                         })
                 }
                 else {
-                    this.error = 'Passwords is not equal'
+                    this.error = 'Passwords are not equal'
                 }
             }
 

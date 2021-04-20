@@ -19,12 +19,12 @@ public class UserDto {
     private Integer id;
 
     @NotNull(message = "Login cannot be empty")
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 20, message = "Login size should be more than 1 and less than 20")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Login can contain only letters, numbers and underscores")
     private String login;
 
     @NotNull(message = "Password cannot be empty")
-    @Size(min = 8, max = 40)
+    @Size(min = 8, max = 40, message = "Password size should be more than 8 and less than 40")
     private String password;
 
     private List<Permission> permissions;

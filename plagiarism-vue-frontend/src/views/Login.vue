@@ -6,17 +6,25 @@
                     <h2 class="card-title">Log in</h2>
                     <p class="card-text">to collect detection statistic and have access to API</p>
                     <div class="alert alert-danger" role="alert" v-if="error">
-                        {{error}}
+                        <p>{{error.message}}</p>
                     </div>
                     <form>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
                             <input class="form-control" v-model="username" id="exampleInputEmail1"
                                    aria-describedby="emailHelp">
+                            <div v-if="error && error.details && error.details.login"
+                                 style="margin-top: 5px;color:red;">
+                                <p>{{error.details.login}}</p>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password</label>
                             <input type="password" class="form-control" v-model="password" id="exampleInputPassword1">
+                            <div v-if="error && error.details && error.details.password"
+                                 style="margin-top: 5px;color:red;">
+                                <p>{{error.details.password}}</p>
+                            </div>
                         </div>
                         <div class="row align-items-start">
                             <div class="col">
@@ -71,7 +79,16 @@
                         this.$router.push('/');
                     })
                     .catch(error => {
-                        this.error = error.response.data.message
+                        try {
+                            this.error = {
+                                message: error.response.data.message,
+                                details: JSON.parse(error.response.data.details)
+                            }
+                        } catch (e) {
+                            this.error = {
+                                message: error.response.data.message
+                            }
+                        }
                     })
             }
 
