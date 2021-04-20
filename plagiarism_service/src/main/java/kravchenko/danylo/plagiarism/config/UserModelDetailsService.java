@@ -2,6 +2,7 @@ package kravchenko.danylo.plagiarism.config;
 
 import kravchenko.danylo.plagiarism.domain.entities.UserEntity;
 import kravchenko.danylo.plagiarism.service.UserService;
+import lombok.SneakyThrows;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,8 +24,9 @@ public class UserModelDetailsService implements UserDetailsService {
         this.userService = userService;
     }
 
+    @SneakyThrows
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         UserEntity user = userService.findByLogin(username).orElseThrow(() ->
                 new UsernameNotFoundException("No user for login: " + username));
 

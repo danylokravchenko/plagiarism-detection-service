@@ -29,13 +29,13 @@ public class UserEntity {
 
     @Column(name = "login")
     @NotNull(message = "Login cannot be empty")
-    @Size(min = 1, max = 20)
+    @Size(min = 4, max = 20, message = "Login size should be more than {min} and less than {max}")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Login can contain only letters, numbers and underscores")
     private String login;
 
     @Column(name = "password")
     @NotNull(message = "Password cannot be empty")
-    @Size(min = 8, max = 100)
+    @Size(min = 8, max = 100, message = "Password size should be more than {min} and less than {max}")
     @JsonIgnore
     private String password;
 

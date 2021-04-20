@@ -1,6 +1,7 @@
 package kravchenko.danylo.plagiarism.domain.exceptions;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,8 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public final ResponseEntity<Object> handleUsernameNotFoundException(Exception ex, WebRequest request) throws Exception {
+//    TODO: https://stackoverflow.com/questions/59417122/how-to-handle-usernamenotfoundexception-spring-security
+    public final ResponseEntity<Object> handleUsernameNotFoundException(final UsernameNotFoundException ex, WebRequest request) throws Exception {
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
@@ -76,6 +78,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     /*
      * Handle errors when request has not passed through the model validation
      */
+    @SneakyThrows
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -86,7 +89,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Validation failed", new Gson().toJson(errors));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Validation failed", new ObjectMapper().writeValueAsString(errors));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
