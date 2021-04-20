@@ -78,7 +78,7 @@
                         })
                 }
                 else {
-                    this.error = 'Passwords are not equal'
+                    this.error = {message: 'Passwords are not equal'}
                 }
             }
 
